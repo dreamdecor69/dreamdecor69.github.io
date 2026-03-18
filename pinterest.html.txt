@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Decor Store</title>
+
+<style>
+body { margin:0; font-family: Arial; background:#f5f5f5; }
+header { background:#111; color:white; text-align:center; padding:20px; }
+
+.products {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+  padding:20px;
+}
+
+.card {
+  background:white;
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.card img {
+  width:100%;
+  height:200px;
+  object-fit:cover;
+}
+
+.card h3 { padding:10px; }
+
+.card button {
+  margin:10px;
+  padding:10px;
+  border:none;
+  background:black;
+  color:white;
+  cursor:pointer;
+  border-radius:5px;
+  width:calc(100% - 20px);
+}
+
+.modal {
+  display:none;
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.7);
+  top:0; left:0;
+}
+
+.modal-content {
+  background:white;
+  margin:8% auto;
+  padding:20px;
+  width:60%;
+  text-align:center;
+  border-radius:10px;
+}
+
+.modal img {
+  width:100%;
+  max-height:300px;
+  object-fit:cover;
+}
+
+.close {
+  float:right;
+  font-size:25px;
+  cursor:pointer;
+}
+
+.btn {
+  display:inline-block;
+  margin-top:15px;
+  padding:10px 20px;
+  background:black;
+  color:white;
+  text-decoration:none;
+  border-radius:5px;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+<h1>✨ Home Decor Store</h1>
+</header>
+
+<section class="products" id="products"></section>
+
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img id="mImg">
+    <h2 id="mTitle"></h2>
+    <p id="mDesc"></p>
+    <a id="mLink" class="btn" target="_blank">View Article</a>
+  </div>
+</div>
+
+<script>
+const products = [
+  {
+    title:"Wall Art",
+    image:"https://via.placeholder.com/400",
+    desc:"Beautiful wall art",
+    link:"https://www.amazon.com/"
+  },
+  {
+    title:"Table Lamp",
+    image:"https://via.placeholder.com/400",
+    desc:"Modern lamp",
+    link:"https://www.amazon.com/"
+  }
+];
+
+function loadProducts() {
+  let html="";
+  products.forEach((p,i)=>{
+    html += `
+    <div class="card">
+      <img src="${p.image}">
+      <h3>${p.title}</h3>
+      <button onclick="openModal(${i})">View Article</button>
+    </div>`;
+  });
+  document.getElementById("products").innerHTML = html;
+}
+
+function openModal(i){
+  let p=products[i];
+  mImg.src=p.image;
+  mTitle.innerText=p.title;
+  mDesc.innerText=p.desc;
+  mLink.href=p.link;
+  modal.style.display="block";
+}
+
+function closeModal(){
+  modal.style.display="none";
+}
+
+window.onclick=function(e){
+  if(e.target==modal){ closeModal(); }
+}
+
+loadProducts();
+</script>
+
+</body>
+</html>
