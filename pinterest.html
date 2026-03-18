@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DreamDecor - Home Decor Store</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+<style>
+/* Global Styles */
+body {
+  margin:0;
+  font-family: 'Montserrat', sans-serif;
+  background: url('https://images.unsplash.com/photo-1600293246188-7e0b0ecb28b4?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fGhvYmJlYXMlMjBsaWZlfGVufDB8fHx8fDE2NjEzNjMwMDE&ixlib=rb-1.2.1&q=80&w=1080') no-repeat center center fixed;
+  background-size: cover;
+  color: #333;
+  height: 100vh;
+}
+
+/* Header with stylish gradient text */
+header {
+  text-align:center;
+  padding:60px 20px;
+  font-size:3rem;
+  font-weight:700;
+  font-family: 'Playfair Display', serif;
+  background-color: rgba(255,255,255,0.2);
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  backdrop-filter: blur(5px);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  background-image: linear-gradient(45deg, #FF5F6D, #FFC371, #6A82FB, #FC5C7D);
+  padding-bottom: 80px;
+}
+
+/* Slider Container */
+.slider-container {
+  position: relative;
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: auto;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(8px);
+  border-radius: 15px;
+}
+
+/* Slider */
+.slider {
+  display:flex;
+  overflow-x:hidden;
+  gap:20px;
+  position: relative;
+}
+
+/* Card */
+.card {
+  min-width: 250px;
+  background: rgba(255,255,255,0.95);
+  border-radius:12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  flex-shrink:0;
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.card img {
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  border-radius:12px 12px 0 0;
+}
+
+.card h3 {
+  padding:12px;
+  font-weight:600;
+  font-size:1.1rem;
+  text-align:center;
+}
+
+.card button {
+  display:block;
+  margin:10px auto 20px;
+  padding:10px 20px;
+  background-color:#333;
+  border:none;
+  color:#fff;
+  font-weight:600;
+  border-radius:6px;
+  cursor:pointer;
+  transition: background 0.3s;
+}
+
+.card button:hover {
+  background-color:#555;
+}
+
+/* Arrows */
+.arrow {
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:2rem;
+  color:#333;
+  background:#fff;
+  border-radius:50%;
+  width:40px;
+  height:40px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor:pointer;
+  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+  user-select:none;
+  transition: background 0.2s;
+}
+
+.arrow:hover {
+  background:#eee;
+}
+
+.arrow-left { left:-20px; }
+.arrow-right { right:-20px; }
+
+/* Modal */
+.modal {
+  display:none;
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.6);
+  justify-content:center;
+  align-items:center;
+  z-index:100;
+}
+
+.modal-content {
+  background:#fff;
+  border-radius:12px;
+  padding:30px;
+  max-width:600px;
+  width:90%;
+  text-align:center;
+  position: relative;
+}
+
+.modal-content img {
+  width:100%;
+  max-height:300px;
+  object-fit:cover;
+  border-radius:10px;
+  margin-bottom:15px;
+}
+
+.modal-content h2 {
+  margin-bottom:10px;
+  font-size:1.5rem;
+  color:#333;
+}
+
+.modal-content p {
+  margin-bottom:20px;
+  color:#666;
+  font-size:1rem;
+}
+
+.modal-content .btn {
+  display:inline-block;
+  padding:10px 25px;
+  background:#333;
+  color:#fff;
+  text-decoration:none;
+  border-radius:6px;
+  font-weight:600;
+  transition: background 0.3s;
+  margin-top: 10px;
+}
+
+.modal-content .btn:hover {
+  background:#555;
+}
+
+.close {
+  position:absolute;
+  top:15px;
+  right:20px;
+  font-size:24px;
+  cursor:pointer;
+  color:#333;
+}
+</style>
+</head>
+
+<body>
+
+<header>DreamDecor</header>
+
+<div class="slider-container">
+  <div class="arrow arrow-left" onclick="slideLeft()">&#10094;</div>
+  <div class="slider" id="slider"></div>
+  <div class="arrow arrow-right" onclick="slideRight()">&#10095;</div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img id="mImg">
+    <h2 id="mTitle"></h2>
+    <p id="mDesc"></p>
+    <!-- This is the SECOND View Article that goes to Amazon -->
+    <a id="mLink" class="btn" target="_blank">View Article</a>
+  </div>
+</div>
+
+<script>
+// Product Data
+const products = [
+  { title:"Modern Wall Art", image:"https://via.placeholder.com/500x300.png?text=Wall+Art", desc:"Elegant modern wall art.", link:"https://www.amazon.com/" },
+  { title:"Decorative Vase", image:"https://via.placeholder.com/500x300.png?text=Vase", desc:"Stylish ceramic vase.", link:"https://www.amazon.com/" },
+  { title:"Neon Lamp", image:"https://via.placeholder.com/500x300.png?text=Lamp", desc:"LED neon lamp for modern interiors.", link:"https://www.amazon.com/" },
+  { title:"Wooden Shelf", image:"https://via.placeholder.com/500x300.png?text=Shelf", desc:"Minimalist wooden shelf.", link:"https://www.amazon.com/" },
+  { title:"Table Clock", image:"https://via.placeholder.com/500x300.png?text=Clock", desc:"Elegant table clock.", link:"https://www.amazon.com/" }
+];
+
+// Load Products
+const slider = document.getElementById("slider");
+
+function loadProducts(){
+  slider.innerHTML = "";
+  products.forEach((p,i)=>{
+    slider.innerHTML += `
+      <div class="card">
+        <img src="${p.image}">
+        <h3>${p.title}</h3>
+        <!-- FIRST View Article opens modal -->
+        <button onclick="openModal(${i})">View Article</button>
+      </div>`;
+  });
+}
+
+// Open Modal (SECOND View Article with close button)
+function openModal(i){
+  const product = products[i];
+  document.getElementById("mImg").src = product.image;
+  document.getElementById("mTitle").innerText = product.title;
+  document.getElementById("mDesc").innerText = product.desc;
+  document.getElementById("mLink").href = product.link; // Amazon link
+  document.getElementById("modal").style.display = "flex";
+}
+
+// Close modal
+function closeModal(){
+  document.getElementById("modal").style.display = "none";
+}
+
+// Slider scroll
+function slideLeft(){ slider.scrollBy({ left:-300, behavior:'smooth' }); }
+function slideRight(){ slider.scrollBy({ left:300, behavior:'smooth' }); }
+
+// Initialize
+loadProducts();
+</script>
+
+</body>
+</html>
